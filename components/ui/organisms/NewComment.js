@@ -1,12 +1,18 @@
-import Avatar from '../atoms/Avatar';
-import Button from '../atoms/Button';
-import Input from '../atoms/Input';
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuthUser } from "../../../store/slices/authSlice";
+import { addComment } from "../../../store/slices/commentSlice";
+import Avatar from "../atoms/Avatar";
+import Button from "../atoms/Button";
+import Input from "../atoms/Input";
 
 export default function NewComment() {
-  const user = 'John Doe';
+  const dispatch = useDispatch();
+  const user = useSelector(selectAuthUser);
 
   function handleNewComment(e) {
     e.preventDefault();
+    dispatch(addComment({ comment: e.target.comment.value, username: user }));
+    e.target.comment.value = "";
   }
 
   return (
@@ -26,7 +32,7 @@ export default function NewComment() {
         <Button type={`submit`}>send</Button>
       </form>
       <div className="py-2">
-        <Button>logout</Button>
+        <Button onclick={() => dispatch(setAuthState(false))}>logout</Button>
       </div>
     </section>
   );

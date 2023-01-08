@@ -1,13 +1,17 @@
-import Head from 'next/head';
-import HomeLayout from '../components/layouts/HomeLayout';
-import Comment from '../components/ui/molecules/Comment';
-import Hero from '../components/ui/organisms/Hero';
-import NewComment from '../components/ui/organisms/NewComment';
-import Login from '../components/ui/organisms/Login';
-import { Comments } from '../components/assets/Comments';
+import Head from "next/head";
+import HomeLayout from "../components/layouts/HomeLayout";
+import Comment from "../components/ui/molecules/Comment";
+import Hero from "../components/ui/organisms/Hero";
+import NewComment from "../components/ui/organisms/NewComment";
+import Login from "../components/ui/organisms/Login";
+// import { Comments } from "../components/assets/Comments";
+import { useSelector } from "react-redux";
+import { selectAuthState } from "../store/slices/authSlice";
+import { selectComments } from "../store/slices/commentSlice";
 
 export default function Home() {
-  const comments = Comments.value;
+  const authState = useSelector(selectAuthState);
+  const comments = useSelector(selectComments);
 
   return (
     <div>
@@ -24,7 +28,6 @@ export default function Home() {
           imageAlt={`Gojo Cat`}
           imageTitle={`Catoru Gojo`}
         />
-
         {/* Comment Section */}
         <section className="py-5">
           {comments.map((obj, idx) => (
@@ -33,8 +36,7 @@ export default function Home() {
         </section>
 
         {/* Input Section */}
-        <NewComment />
-        <Login />
+        {authState ? <NewComment /> : <Login />}
       </HomeLayout>
     </div>
   );
